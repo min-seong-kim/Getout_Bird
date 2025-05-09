@@ -1,25 +1,14 @@
-import supervision as sv
-from PIL import Image
+from inference_sdk import InferenceHTTPClient
 
-# Load the image
-image = Image.open("/home/getout/workspace/watchbird/test_image/test3.png")
-
-# Get results
-results = CLIENT.infer(
-    "/home/getout/workspace/watchbird/test_image/test3.png", 
-    model_id="bird-v2-5op83/1"
+client = InferenceHTTPClient(
+    api_url="http://localhost:9001"  # 로컬 inference 서버 사용
 )
 
-# Convert results to detections
-detections = sv.Detections.from_inference(results[0])
+image_path = "/home/getout/workspace/watchbird/test_image/test3.png"
 
-# Create annotators
-box_annotator = sv.BoxAnnotator()
-label_annotator = sv.LabelAnnotator()
+result = client.infer(
+    image_path,
+    model_id="bird-v2-5op83/1"  # 당신이 만든 모델 ID
+)
 
-# Annotate image
-annotated_image = box_annotator.annotate(scene=image, detections=detections)
-annotated_image = label_annotator.annotate(scene=annotated_image, detections=detections)
-
-# Display the image
-sv.plot_image(image=annotated_image, size=(16, 16))
+print(result)
