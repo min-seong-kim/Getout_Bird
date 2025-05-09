@@ -1,0 +1,29 @@
+ 2025-05-09 20:11:39,358 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:7777
+ * Running on http://172.21.86.76:7777
+2025-05-09 20:11:39,358 - [33mPress CTRL+C to quit[0m
+2025-05-09 20:11:50,548 - [까마귀] 퇴치 사운드 시작
+2025-05-09 20:11:50,548 - 까마귀: 랜덤 + 불규칙 재생
+2025-05-09 20:12:35,345 - [참새] 퇴치 사운드 시작
+2025-05-09 20:12:35,345 - 참새: 고주파 빠른 셔플 재생
+2025-05-09 20:17:08,832 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:7777
+ * Running on http://172.21.86.76:7777
+2025-05-09 20:17:08,832 - [33mPress CTRL+C to quit[0m
+2025-05-09 20:17:20,959 - 127.0.0.1 - - [09/May/2025 20:17:20] "POST /bird HTTP/1.1" 200 -
+2025-05-09 20:17:34,890 - 127.0.0.1 - - [09/May/2025 20:17:34] "POST /bird HTTP/1.1" 200 -
+2025-05-09 20:19:24,606 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:7777
+ * Running on http://172.21.86.76:7777
+2025-05-09 20:19:24,609 - [33mPress CTRL+C to quit[0m
+2025-05-09 20:19:34,011 - 127.0.0.1 - - [09/May/2025 20:19:34] "POST /bird HTTP/1.1" 200 -
+2025-05-09 20:19:34,011 - [참새] 퇴치 사운드 시작
+2025-05-09 20:19:34,014 - 참새: 고주파 빠른 셔플 재생
+2025-05-09 20:43:30,346 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:7777
+ * Running on http://172.21.86.76:7777
+2025-05-09 20:43:30,346 - [33mPress CTRL+C to quit[0m
