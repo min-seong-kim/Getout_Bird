@@ -1,10 +1,14 @@
-// components/Navbar.js
-import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => (
-  <header className="bg-gray-700 text-white text-center py-4 text-2xl font-bold tracking-wide">
-    AI 새 쫓기 시스템
-  </header>
+  <nav className="w-full bg-white shadow-md p-4">
+    <div className="max-w-screen-xl mx-auto flex items-center justify-between">
+      {/* 홈으로 이동하는 로고 or 제목 */}
+      <Link to="/" className="text-2xl font-bold text-blue-600 hover:underline">
+        AI 새 쫓기 시스템
+      </Link>
+    </div>
+  </nav>
 );
 
 export default Navbar;

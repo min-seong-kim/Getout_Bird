@@ -1,0 +1,96 @@
+import os
+import re
+from flask import Flask, send_from_directory, jsonify, request
+
+# ——————————————————————
+# 1) Configure your app
+# ——————————————————————
+app = Flask(
+    __name__,
+    static_folder='build',      # same as before: your Tailwind build output
+    static_url_path=''          # so /css/... maps to build/css/...
+)
+
+# where your frames are saved; adjust if your folder is elsewhere
+SAVE_FOLDER = "/home/getout/workspace/watchbird/save"
+
+# ——————————————————————
+# 2) Frontend routes
+# ——————————————————————
+
+@app.route('/')
+def serve_index():
+    return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/<path:filename>')
+def serve_static(filename):
+    # serve JS/CSS/etc first
+    target = os.path.join(app.static_folder, filename)
+    if os.path.exists(target):
+        return send_from_directory(app.static_folder, filename)
+    # fallback for client-side routing
+    return send_from_directory(app.static_folder, 'index.html')
+
+
+# ——————————————————————
+# 3) Image-serving route
+# ——————————————————————
+
+@app.route('/images/<path:filename>')
+def serve_image(filename):
+    return send_from_directory(SAVE_FOLDER, filename)
+
+
+# ——————————————————————
+# 4) “latest image” API
+# ——————————————————————
+
+@app.route('/api/latest-image')
+def latest_image():
+    try:
+        files = [
+            f for f in os.listdir(SAVE_FOLDER)
+            if f.startswith('frame_') and f.endswith('.jpg')
+        ]
+    except FileNotFoundError:
+        return jsonify({'error': 'Save directory not found'}), 404
+
+    # extract the number from “frame_123.jpg”
+    def get_index(name):
+        m = re.match(r'frame_(\d+)\.jpg', name)
+        return int(m.group(1)) if m else -1
+
+    files.sort(key=get_index, reverse=True)
+
+    if not files:
+        return jsonify({'error': 'No image found'}), 404
+
+    # return the URL path (frontend can do <img src={imageUrl}/> )
+    return jsonify({'imageUrl': f'/images/{files[0]}'})
+
+@app.route('/api/images')
+def list_images():
+    """Return a JSON list of all frame_*.jpg files in SAVE_FOLDER."""
+    try:
+        files = os.listdir(SAVE_FOLDER)
+    except FileNotFoundError:
+        return jsonify({ 'error': 'Save directory not found' }), 404
+
+    # Only include .jpg files, or change filter as you like
+    images = sorted(
+        [f for f in files if f.startswith('frame_') and f.endswith('.jpg')]
+    )
+
+    # If you want full URLs instead of just names, uncomment:
+    # host = request.host_url.rstrip('/')
+    # images = [ f"{host}/images/{fname}" for fname in images ]
+
+    return jsonify(images)
+
+# ——————————————————————
+# 5) Run it
+# ——————————————————————
+if __name__ == '__main__':
+    # match your Express port if you like
+    app.run(debug=True, host='0.0.0.0', port=4000)
+
