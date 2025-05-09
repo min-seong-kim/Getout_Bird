@@ -43,7 +43,7 @@
 - 🧠 외부 AI API	Roboflow	이미지 기반 실시간 조류 탐지
 - 🧠 외부 AI 분석기	BirdNET-Analyzer	조류 소리 기반 종 분석
 - 🖥️ 서버	Python + Flask / FastAPI	API 연동, 퇴치 판단, 출력 제어
-- 🔊 스피커	Marshall 블루투스 스피커 등	조류별 퇴치 사운드 재생
+- 🔊 스피커	-	조류별 퇴치 사운드 재생
 - 🗃 데이터 저장	(선택) SQLite / CSV 로그	조류 감지 로그 기록, 분석용
 - 🌐 프론트	웹 대시보드
 
