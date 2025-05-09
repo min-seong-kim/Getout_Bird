@@ -14,7 +14,15 @@ CLIENT = InferenceHTTPClient(
 watch_directory = "/home/getout/workspace/watchbird/save"
 output_directory = "/home/getout/workspace/watchbird/save_result"
 save_bird_class_directory = "/home/getout/workspace/watchbird/save_bird_class"  # 클래스 저장 경로
-model_id = "bird-v2-5op83/1"
+model_id = "bird-v2-f47sp/1"
+
+# 영어 -> 한국어 번역 딕셔너리
+CLASS_NAME_MAPPING = {
+    "rock-pigeon": "비둘기",
+    "Magpie": "까치",
+    "sparrow": "참새",
+    "crow": "까마귀"
+}
 
 def get_latest_file(directory):
     files = [os.path.join(directory, f) for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
@@ -42,12 +50,19 @@ def process_image(image_path):
             h = int(prediction["height"])
             class_name = prediction["class"]
 
+            # 클래스 이름 번역 (영어를 한국어로)
+            class_name_ko = class_name
+            for eng, kor in CLASS_NAME_MAPPING.items():
+                if eng in class_name:
+                    class_name_ko = kor
+                    break
+
             # 클래스 이름 저장
             filename = os.path.basename(image_path)
             name, ext = os.path.splitext(filename)
-            class_file_path = os.path.join(save_bird_class_directory, f"{name}.txt")
+            class_file_path = os.path.join(save_bird_class_directory, f"frame_result_{name.split('_')[-1]}.txt")
             with open(class_file_path, "w") as f:
-                f.write(class_name)
+                f.write(class_name_ko)
             print(f"Class name saved to {class_file_path}")
 
             # 왼쪽 상단, 오른쪽 하단 좌표 계산
@@ -56,7 +71,7 @@ def process_image(image_path):
             x2 = int(x + w / 2)
             y2 = int(y + h / 2)
 
-            # 사각형 그리기 및 클래스 이름 쓰기
+            # 사각형 그리기 및 클래스 이름 쓰기 (영어 이름 사용)
             cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.putText(image, class_name, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 

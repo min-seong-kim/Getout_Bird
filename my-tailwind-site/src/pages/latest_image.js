@@ -26,7 +26,7 @@ const latest_image = () => {
               const match = f.match(/frame_(\d+)(?:_result)?\.jpg/);
               return match ? parseInt(match[1]) : 0;
             };
-            return getTime(b) - getTime(a);
+            return getTime(a) - getTime(b);
           });
 
         const fullData = sorted.map(name => ({

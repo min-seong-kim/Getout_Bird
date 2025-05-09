@@ -9,7 +9,7 @@ export async function fetchImageList() {
         const match = f.match(/frame_(\d+)\.jpg/);
         return match ? parseInt(match[1]) : 0;
       };
-      return getTime(b) - getTime(a);
+      return getTime(a) - getTime(b);
     });
 
   return sorted.map(name => ({
@@ -28,15 +28,15 @@ export async function fetchImageList_result() {
     .filter(name => name.startsWith('frame_') && name.endsWith('.jpg'))
     .sort((a, b) => {
       const getTime = f => {
-        const match = f.match(/frame_(\d+)\.jpg/);
+        const match = f.match(/frame_result_(\d+)\.jpg/);
         return match ? parseInt(match[1]) : 0;
       };
-      return getTime(b) - getTime(a);
+      return getTime(a) - getTime(b);
     });
 
   return sorted.map(name => ({
     name,
     url: `http://220.149.235.221:4000/images_result/${name}`,
-    timestamp: parseInt(name.match(/frame_(\d+)\.jpg/)[1])
+    timestamp: parseInt(name.match(/frame_result_(\d+)\.jpg/)[1])
   }));
 }
