@@ -5,52 +5,63 @@ const ImageSection = () => {
   const [analyzedImage, setAnalyzedImage] = useState(null);
 
   useEffect(() => {
-    fetch('http://220.149.235.221:4000/api/images')
-      .then(res => res.json())
-      .then(fileList => {
-        const sorted = fileList
-          .filter(name => name.startsWith('frame_') && name.endsWith('.jpg'))
-          .sort((a, b) => {
-            const getTime = f => {
-              const match = f.match(/frame_(\d+)\.jpg/);
-              return match ? parseInt(match[1]) : 0;
-            };
-            return getTime(b) - getTime(a);
-          });
+    const fetchImages = () => {
+      fetch('http://220.149.235.221:4000/api/images')
+        .then(res => res.json())
+        .then(fileList => {
+          const sorted = fileList
+            .filter(name => name.startsWith('frame_') && name.endsWith('.jpg'))
+            .sort((a, b) => {
+              const getTime = f => {
+                const match = f.match(/frame_(\d+)(?:_result)?\.jpg/);
+                return match ? parseInt(match[1]) : 0;
+              };
+              return getTime(b) - getTime(a);
+            });
 
-        if (sorted.length > 0) {
-          setLatestImage(`http://220.149.235.221:4000/images/${sorted[0]}`);
-        } else {
+          if (sorted.length > 0) {
+            setLatestImage(`http://220.149.235.221:4000/images/${sorted[0]}`);
+          } else {
+            setLatestImage(null);
+          }
+        })
+        .catch(err => {
+          console.error("이미지 불러오기 실패:", err);
           setLatestImage(null);
-        }
-      })
-      .catch(err => {
-        console.error("이미지 불러오기 실패:", err);
-        setLatestImage(null);
-      });
-    fetch('http://220.149.235.221:4000/api/images_result')
-      .then(res => res.json())
-      .then(fileList => {
-        const sorted = fileList
-          .filter(name => name.endsWith('.jpg'))
-          .sort((a, b) => {
-            const getTime = f => {
-              const match = f.match(/frame_(\d+)\.jpg/);
-              return match ? parseInt(match[1]) : 0;
-            };
-            return getTime(b) - getTime(a);
-          });
+        });
 
-        if (sorted.length > 0) {
-          setAnalyzedImage(`http://220.149.235.221:4000/images_result/${sorted[0]}`);
-        } else {
+      fetch('http://220.149.235.221:4000/api/images_result')
+        .then(res => res.json())
+        .then(fileList => {
+          const sorted = fileList
+            .filter(name => name.endsWith('.jpg'))
+            .sort((a, b) => {
+              const getTime = f => {
+                const match = f.match(/frame_(\d+)(?:_result)?\.jpg/);
+                return match ? parseInt(match[1]) : 0;
+              };
+              return getTime(b) - getTime(a);
+            });
+
+          if (sorted.length > 0) {
+            setAnalyzedImage(`http://220.149.235.221:4000/images_result/${sorted[0]}`);
+          } else {
+            setAnalyzedImage(null);
+          }
+        })
+        .catch(err => {
+          console.error("❌ 분석 이미지 불러오기 실패:", err);
           setAnalyzedImage(null);
-        }
-      })
-      .catch(err => {
-        console.error("❌ 분석 이미지 불러오기 실패:", err);
-        setAnalyzedImage(null);
-      });
+        });
+    };
+
+    fetchImages();
+
+    const interval = setInterval(() => {
+      fetchImages();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (

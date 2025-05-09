@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { fetchImageList } from '../utils/imageFetcher';
+import { fetchImageList } from '../utils/imageFetcher'; // 원본 이미지용
 
 const latest_image = () => {
   const [images, setImages] = useState([]);
   const [analyzedImages, setAnalyzedImages] = useState([]);
 
   useEffect(() => {
+    // 1. 원본 이미지
     fetchImageList()
       .then(data => {
-        console.log("✅ 받아온 원본 이미지들:", data);
         setImages(data);
       })
       .catch(err => {
         console.error("❌ 원본 이미지 불러오기 실패:", err);
       });
 
-    fetch('http://220.149.235.221:4000/api/images_result/')
+    // 2. 분석 이미지 (JSON)
+    fetch('http://220.149.235.221:4000/api/images_result')
       .then(res => res.json())
       .then(fileList => {
         const sorted = fileList
           .filter(name => name.endsWith('.jpg'))
           .sort((a, b) => {
             const getTime = f => {
-              const match = f.match(/frame_(\d+)\.jpg/);
+              const match = f.match(/frame_(\d+)(?:_result)?\.jpg/);
               return match ? parseInt(match[1]) : 0;
             };
             return getTime(b) - getTime(a);
@@ -31,14 +32,13 @@ const latest_image = () => {
         const fullData = sorted.map(name => ({
           name,
           url: `http://220.149.235.221:4000/images_result/${name}`,
-          timestamp: parseInt(name.match(/frame_(\d+)\.jpg/)?.[1] || 0)
+          timestamp: parseInt(name.match(/frame_(\d+)(?:_result)?\.jpg/)?.[1] || 0)
         }));
 
-        console.log("✅ 받아온 AI 분석 이미지들:", fullData);
         setAnalyzedImages(fullData);
       })
       .catch(err => {
-        console.error("❌ 분석 이미지 불러오기 실패:", err);
+        console.error("❌ 분석 이미지 JSON 불러오기 실패:", err);
       });
   }, []);
 
@@ -60,12 +60,7 @@ const latest_image = () => {
           images.map((img, idx) => (
             <div key={idx} className="border p-2 text-center space-y-2">
               <div className="h-48 flex items-center justify-center border">
-                <img
-                  src={img.url}
-                  alt={img.name}
-                  className="max-h-full object-contain"
-                  onError={() => console.log("❌ 로드 실패:", img.url)}
-                />
+                <img src={img.url} alt={img.name} className="max-h-full object-contain" />
               </div>
               <div className="text-sm text-gray-800 font-semibold">{img.name}</div>
               <div className="text-xs text-gray-500">{formatDate(img.timestamp)}</div>
@@ -83,12 +78,7 @@ const latest_image = () => {
           analyzedImages.map((img, idx) => (
             <div key={idx} className="border p-2 text-center space-y-2">
               <div className="h-48 flex items-center justify-center border">
-                <img
-                  src={img.url}
-                  alt={img.name}
-                  className="max-h-full object-contain"
-                  onError={() => console.log("❌ 분석 이미지 로딩 실패:", img.url)}
-                />
+                <img src={img.url} alt={img.name} className="max-h-full object-contain" />
               </div>
               <div className="text-sm text-gray-800 font-semibold">{img.name}</div>
               <div className="text-xs text-gray-500">{formatDate(img.timestamp)}</div>
