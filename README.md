@@ -1,4 +1,4 @@
-# 🧑‍🌾 안.농.하세요 (안전한 농가 하세요)
+![image](https://github.com/user-attachments/assets/2bf2fe77-69e4-4234-b171-7b6939fcb18b)# 🧑‍🌾 안.농.하세요 (안전한 농가 하세요)
 ### Khuthon 2025 – 농업의 기술화 / DKU Team 돌아가면_냅두자
 > - https://thon.khlug.org/about/2025
 
@@ -12,9 +12,13 @@
 ## 🐤 팀원 소개
 팀 소개 – 돌아가면_냅두자
 - 👨🏻 김민성 (DB 설계, 영상 인식 처리)
+  - kms0509@dankook.ac.kr
 - 👩🏻 위다연 (UI, 영상 인식 처리)
+  - wida10@dankook.ac.kr 
 - 👨🏻 이용민 (서버 설계, 음성 인식 처리)
+  - 32203349@dankook.ac.kr 
 - 👩🏻 박주희 (기획, 음성 출력 처리)
+  - pjuhee23@dankook.ac.kr 
 
 ## 📌 프로젝트·서비스 소개 
 - Roboflow 기반 영상 인식과 BirdNET 기반 음성 분석을 활용
