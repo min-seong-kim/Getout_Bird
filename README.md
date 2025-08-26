@@ -62,3 +62,5 @@
 - 정책 자료: https://www.mafra.go.kr/bbs/home/792/572965/artclView.do
 - Nonlethal Bird Deterrent Strategies: Methods for reducing fruit crop losses in Oregon.
 
+## award
+[khuthon_award.PDF](https://github.com/user-attachments/files/21988997/khuthon_award.PDF)
